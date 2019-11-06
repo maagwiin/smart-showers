@@ -1,0 +1,195 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "float vazao = 0; //Variável para armazenar o valor em L/min\nfloat consumoL = 0; //Variável para armazenar o valor em L\nint contaPulso; //Variável para a quantidade de pulsos\nconst int liga = 3; //Define botão Liga\nconst int desliga = 4; //Define botão Desliga\nconst int aviso = 5; //Define saida do aviso\nconst int block = 6; //Define o bloqueio da agua\nint estadoLiga = 0; //Zera as variáveis\nint estadoDesliga = 0; //Zera as variáveis\nint ligado = 0; //Zera as variáveis\nint readBluet; //Variável para ler o bluetooth\n\nvoid setup() {\n  Serial.begin(9600); //Inicia a visualisação serial\n  pinMode(liga, INPUT); //Botoeira Liga\n  pinMode(desliga, INPUT); //Botoeira Desliga\n  pinMode(aviso, OUTPUT); //Saída Buzzer\n  pinMode(block, OUTPUT); //Saída Relé Valvula\n  pinMode(2, INPUT); //Entrada do Sensor\n  attachInterrupt(0, incpulso, RISING); //Configura o pino 2(Interrupção 0) para chamar a função \"incpulso\" quando o pino mudar de 0 para 1\n  readBluet=Serial.read(); //Faz a relação variavel/serial\n}\n\nvoid loop() {\n  estadoLiga = digitalRead(liga); //Armazena botão na variável\n  estadoDesliga = digitalRead(desliga); //Armazena botão na variável\n\n  if (estadoLiga == HIGH) { //botao liga pressionado\n    ligado = ligado + 1; //incrementa o valor 1 na variavel ligado\n  }\n\n  if (readBluet == \"L\") { //botao liga pressionado\n    ligado = ligado + 1; //incrementa o valor 1 na variavel ligado\n  }\n\n  if (estadoDesliga == HIGH) { //botao desliga pressionado\n    ligado = 0; //zera a variável ligado\n\n  }\n\n  if (readBluet == \"D\") { //botao desliga pressionado\n    ligado = 0; //zera a variável ligado\n  }\n\n   if (readBluet == \"P\") { //botao pausa\n    ligado = 2; //Pausa\n   }\n  \n  if (ligado = 0) { //Sistema desligado\n    Serial.write(\"0\"); //envia o sinal 0 para o bluetooth\n    vazao = 0;\n    consumoL = 0;\n    }\n  if (ligado = 1) { //se o valor de ligado for 1 inicia o sistema\n    Serial.write(\"1\"); //envia o sinal 1 para o bluetooth\n    digitalWrite(block, HIGH); //desbloqueia a valvula\n\n    contaPulso = 0; //Zera a variável para contar os giros por segundos\n    sei(); //Habilita interrupção\n    delay (1000); //Aguarda 1 segundo\n    cli(); //Desabilita interrupção\n\n    vazao = contaPulso / 10; //faz o calculo da vazão em L/m\n    consumoL = (vazao / 60) + consumoL; //Faz o cauculo do consumo em L\n    \n}\n    \n   if (ligado = 2){ //com o botão liga pressionado novamente, \"ligado\" vai para 2(ESTADO DE PAUSA)\n      digitalWrite(block, LOW); //Bloqueia valvula\n      Serial.write(\"2\"); //envia o sinal 2 para o bluetooth\n  }\n\n  if (ligado = 3){ //com o botão liga pressionado novamente, \"ligado\" vai para 3(ESTADO DE \"DESPAUSE\" ahuhsaushua)\n     ligado = ligado - 2; //Ligado volta pro valor 1\n     }\n\n  if (consumoL >= 1) { //consumo atinge 1 Litro\n    Serial.write(\"3\"); //envia o sinal 3 para o bluetooth\n    digitalWrite(aviso, HIGH); //Buzzer acionando\n    delay (1000); //Buzzer acionado (1 segundo de zoeira irritante)\n    digitalWrite(aviso, LOW); //buzzer desacionando\n    delay (10000); //10 segundos pro lerdo terminar de enxaguar\n    Serial.write(\"4\"); //envia o sinal 4 para o bluetooth\n    digitalWrite(block, LOW); //bloqueio da valvula JÁ ERA DOIDÃO, SE FUDEU\n    ligado = 0;\n  }\n}\nvoid incpulso(){ //comando do attach\ncontaPulso++; //Incrementa a variável de pulsos\n}",
+			"settings":
+			{
+				"buffer_size": 3296,
+				"line_ending": "Windows",
+				"name": "float vazao = 0; //Variável para armazenar o valor"
+			}
+		}
+	],
+	"build_system": "Packages/C++/C++.sublime-build",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/MaryAraujo/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3296,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9,
+								9
+							]
+						],
+						"settings":
+						{
+							"auto_name": "float vazao = 0; //Variável para armazenar o valor",
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 945.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "Tcc.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
